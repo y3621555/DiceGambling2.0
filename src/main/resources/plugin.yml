@@ -1,0 +1,8 @@
+name: Dicegambling
+version: ${project.version}
+main: com.johnson.dicegambling.Dicegambling
+api-version: 1.16
+commands:
+  dice:
+    description: nono
+    usage: /<dice>
