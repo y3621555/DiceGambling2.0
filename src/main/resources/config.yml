@@ -1,6 +1,6 @@
 # Config
-use: "true"    #true=On false=off
-DiceCooldown: "time"
+use: true    #true=On false=off
+DiceCooldown: 180
 1/3Rate: "2.5"
 1/2Rate: "1.8"
 Min: "100"

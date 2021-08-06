@@ -2,6 +2,7 @@ package com.johnson.dicegambling.Commands;
 
 import com.johnson.dicegambling.Config.ConfigManager;
 import com.johnson.dicegambling.Dicegambling;
+import com.johnson.dicegambling.Timer.OpenDice;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,10 +11,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class DiceCommands implements CommandExecutor {
-
+    OpenDice openDice;
     ConfigManager configManager;
+
     public DiceCommands(Dicegambling i){
         configManager = new ConfigManager(i);
+        openDice = new OpenDice(i);
     }
 
     @Override
@@ -27,8 +30,9 @@ public class DiceCommands implements CommandExecutor {
                 return true;
             }
             else if ( args.length == 1 && args[0].equalsIgnoreCase("test")){
+
                 p.sendMessage("測試有效");
-                p.sendMessage("冷卻 " + this.configManager.getConfig().getString("DiceCooldown"));
+                p.sendMessage("冷卻 " + openDice.getCountDown());
                 return true;
             }
             else if (args.length == 1 && args[0].equalsIgnoreCase("reload") && p.isOp()){
