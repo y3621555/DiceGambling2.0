@@ -6,3 +6,4 @@ commands:
   dice:
     description: nono
     usage: /<dice>
+depend: [Vault]

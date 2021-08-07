@@ -1,8 +1,23 @@
 # Config
 use: true    #true=On false=off
 DiceCooldown: 180
-1/3Rate: "2.5"
-1/2Rate: "1.8"
-Min: "100"
-Max: "10000"
+1/3Rate: 2.5
+1/2Rate: 1.8
+Min: 100
+Max: 10000
 # Language
+prefix: "<賭場>"
+message:
+  NoInstallEconomy: "偵測到未安裝經濟插件"
+  dicecountdown:
+    60s: "60秒後開骰"
+    30s: "30秒後開骰"
+    10s: "10秒後開骰"
+    opendice: "開骰"
+  rule:
+    - "§f------§6賭博系統§f------"
+    - "§7類型: 大(56) 中(34) 小(12) §f賠率 §62.5 §f倍"
+    - "§7類型: 單(135) 雙(246) §f賠率 §61.8 §f倍"
+    - "§7/dice bet 金額 類型 §f下注指令"
+    - "§7/dice his §f查詢此局下注"
+    - "§7/dice cooldown §f查詢開骰時間"
