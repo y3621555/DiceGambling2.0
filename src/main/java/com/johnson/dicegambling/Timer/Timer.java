@@ -3,15 +3,16 @@ package com.johnson.dicegambling.Timer;
 import com.johnson.dicegambling.Config.ConfigManager;
 import com.johnson.dicegambling.Dicegambling;
 import org.bukkit.Bukkit;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class OpenDice extends BukkitRunnable {
+public class Timer extends BukkitRunnable {
     private int originalCountdown;
     public int countdown;
     ConfigManager configManager;
 
 
-    public OpenDice(Dicegambling i){
+    public Timer(Dicegambling i){
         configManager = new ConfigManager(i);
         originalCountdown = this.configManager.getConfig().getInt("DiceCooldown");
         countdown = originalCountdown;
@@ -24,17 +25,32 @@ public class OpenDice extends BukkitRunnable {
         //Bukkit.broadcastMessage(getTime());
 
         if (countdown == 60){
-            Bukkit.broadcastMessage(this.configManager.getConfig().getString("prefix") +  this.configManager.getConfig().getString("message.dicecountdown.60s"));
+            Bukkit.broadcastMessage(
+                    this.configManager.getConfig().getString("prefix").replace("&","§") +
+                    " " +
+                    this.configManager.getConfig().getString("message.dicecountdown.60s")
+            );
         }
         else if (countdown == 30){
-            Bukkit.broadcastMessage(this.configManager.getConfig().getString("prefix") +  this.configManager.getConfig().getString("message.dicecountdown.30s"));
+            Bukkit.broadcastMessage(
+                    this.configManager.getConfig().getString("prefix").replace("&","§") +
+                    " " +
+                    this.configManager.getConfig().getString("message.dicecountdown.30s"));
         }
         else if (countdown == 10){
-            Bukkit.broadcastMessage(this.configManager.getConfig().getString("prefix") +  this.configManager.getConfig().getString("message.dicecountdown.10s"));
+            Bukkit.broadcastMessage(
+                    this.configManager.getConfig().getString("prefix").replace("&","§") +
+                    " " +
+                    this.configManager.getConfig().getString("message.dicecountdown.10s")
+            );
         }
         if (countdown == 0 ){
             //開骰
-            Bukkit.broadcastMessage(this.configManager.getConfig().getString("prefix") +  this.configManager.getConfig().getString("message.dicecountdown.opendice"));
+            Bukkit.broadcastMessage(
+                    this.configManager.getConfig().getString("prefix").replace("&","§") +
+                    " " +
+                    this.configManager.getConfig().getString("message.dicecountdown.opendice")
+            );
             countdown = originalCountdown;
         }
         countdown--;

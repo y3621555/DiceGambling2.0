@@ -17,7 +17,7 @@ public class MessageHandler {
         List<String> rule = this.configManager.getConfig().getStringList("message.rule");
         List<String> Msg = new ArrayList<>();
         for ( String line:rule){
-            line.replace("&", "§");
+            line = line.replace("&", "§");
             Msg.add(line);
         }
         return Msg;

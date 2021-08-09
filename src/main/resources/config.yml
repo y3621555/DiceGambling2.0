@@ -5,8 +5,26 @@ DiceCooldown: 180
 1/2Rate: 1.8
 Min: 100
 Max: 10000
+Type:
+  1/3Rate:
+    big:
+      - "大"
+      - "big"
+    mid:
+      - "中"
+      - "mid"
+    small:
+      - "小"
+      - "small"
+  1/2Rate:
+    single:
+      - "單"
+      - "single"
+    even:
+      - "雙"
+      - "even"
 # Language
-prefix: "<賭場>"
+prefix: "§f<§6賭場§f>:"
 message:
   NoInstallEconomy: "偵測到未安裝經濟插件"
   dicecountdown:
@@ -18,6 +36,14 @@ message:
     - "§f------§6賭博系統§f------"
     - "§7類型: 大(56) 中(34) 小(12) §f賠率 §62.5 §f倍"
     - "§7類型: 單(135) 雙(246) §f賠率 §61.8 §f倍"
-    - "§7/dice bet 金額 類型 §f下注指令"
+    - "§7/dice bet 類型(type) 金額(money) §f下注指令"
     - "§7/dice his §f查詢此局下注"
     - "§7/dice cooldown §f查詢開骰時間"
+  BetError: "&c下注類型或是金錢錯誤"      #Bet Type Error or Money Error
+  BetMoneyError: "&c下注金額過大或小"  #Bet Money < Max or > Min
+  BetTrue: "&c下注成功"
+  His:
+    Title: "------賭場下注資訊------"
+    BetHis: "玩家: {PLAYER} 類型: {TYPE} 金額: {MONEY}"
+    NotBet: "&c你沒有下注"         #You are not bet
+  InsufficientBalance: "&c餘額不足"

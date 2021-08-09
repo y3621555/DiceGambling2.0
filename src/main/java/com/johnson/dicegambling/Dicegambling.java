@@ -2,7 +2,8 @@ package com.johnson.dicegambling;
 
 
 import com.johnson.dicegambling.Config.ConfigManager;
-import com.johnson.dicegambling.Timer.OpenDice;
+import com.johnson.dicegambling.Timer.Timer;
+import com.johnson.dicegambling.data.dataManager;
 import com.johnson.dicegambling.message.MessageHandler;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.ChatColor;
@@ -10,20 +11,19 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
 
 public final class Dicegambling extends JavaPlugin implements CommandExecutor {
     public ConfigManager configManager;
-    public OpenDice openDice;
+    public Timer timer;
     public MessageHandler messageHandler;
+    public dataManager dataManager;
     private Economy econ = null;
+
 
 
     @Override
@@ -31,6 +31,7 @@ public final class Dicegambling extends JavaPlugin implements CommandExecutor {
         // Plugin startup logic
         this.configManager = new ConfigManager(this);
         this.messageHandler = new MessageHandler(this);
+        this.dataManager = new dataManager(this);
 
         if (!setupEconomy() ) {
             System.out.println(this.configManager.getConfig().getString("message.NoInstallEconomy"));
@@ -42,9 +43,9 @@ public final class Dicegambling extends JavaPlugin implements CommandExecutor {
         getCommand("dice").setExecutor(this);
 
         //Get use = true run taskTimer
-        openDice = new OpenDice(this);
+        timer = new Timer(this);
         if (this.configManager.getConfig().getBoolean("use")){
-            openDice.runTaskTimer(this, 0L, 20L);
+            timer.runTaskTimer(this, 0L, 20L);
         }
 
     }
@@ -60,16 +61,81 @@ public final class Dicegambling extends JavaPlugin implements CommandExecutor {
         if (sender instanceof Player){
 
             Player p = (Player) sender;
-            if ( args.length == 0 ) {
+            Economy economy = getEconomy();
+            double PlayerBank = economy.getBalance(p);
 
+            if ( args.length == 0 ) {
+                return true;
+            }
+            else if (args.length == 1 && args[0].equalsIgnoreCase("help")){
                 for ( String line : messageHandler.getRule()){
                     p.sendMessage(line);
                 }
                 return true;
             }
-            else if ( args.length == 1 && args[0].equalsIgnoreCase("test")){
-                p.sendMessage("冷卻 " + openDice.getCountDown() );
+            else if ( args.length == 3 && args[0].equalsIgnoreCase("bet")){
+                List<String> type = dataManager.getType();
+                String playerType = args[1];
+                boolean isNum = args[2].matches("[0-9]+");
+                if ( type.contains(playerType)){
+                    //下注類型正確
+                    if ( isNum ){
+                        //輸入的金額是數字
+                        double BetMoney = Double.parseDouble(args[2]);
+                        double Tack_Money = PlayerBank - BetMoney;
+                        if (BetMoney >= this.configManager.getConfig().getDouble("Min") && BetMoney <= this.configManager.getConfig().getDouble("Max")){
+                            //金額正確
+                            if ( Tack_Money >= 0){
+                                //庫存的錢夠
+                                dataManager.EnterBet(p,playerType,BetMoney);
+                            }
+                            else {
+                                //餘額不足
+                                p.sendMessage(
+                                        this.configManager.getConfig().getString("prefix").replace("&","§") +
+                                                " " +
+                                                this.configManager.getConfig().getString("message.InsufficientBalance").replace("&","§")
+                                );
+                            }
+                        }
+                        else{
+                            //金額錯誤
+                            p.sendMessage(
+                                    this.configManager.getConfig().getString("prefix").replace("&","§") +
+                                            " " +
+                                            this.configManager.getConfig().getString("message.BetMoneyError").replace("&","§")
+                            );
+                        }
+                    }
+                    else{
+                        //輸入的金額不是數字
+                        p.sendMessage(
+                                this.configManager.getConfig().getString("prefix").replace("&","§") +
+                                " " +
+                                this.configManager.getConfig().getString("message.BetError").replace("&","§")
+                        );
+                    }
+                }
+                else {
+                    //下注類型錯誤
+                    p.sendMessage(
+                            this.configManager.getConfig().getString("prefix").replace("&","§") +
+                            " " +
+                            this.configManager.getConfig().getString("message.BetError").replace("&","§")
+                    );
+                }
+
                 return true;
+            }
+            else if (args.length == 1 && args[0].equalsIgnoreCase("cooldown")){
+                p.sendMessage(
+                        this.configManager.getConfig().getString("prefix").replace("&","§") +
+                         " " +
+                        timer.getCountDown()
+                        );
+            }
+            else if (args.length ==1 && args[0].equalsIgnoreCase("his")){
+                dataManager.getHis(p);
             }
             else if (args.length == 1 && args[0].equalsIgnoreCase("reload") && p.isOp()){
                 this.configManager.reloadConfig();
