@@ -11,7 +11,7 @@
 
 ## Commands and Permissions
 - /dice help -查詢命令及介紹
-- /dice his -查看歷史骰子數據(10)
+- /dice his -查看下注資訊
 - /dice bet 類型(Type) 金錢(Money) -下注
 
 ## You need to have the following plugins installed on your Server: (您需要在服務器上安裝以下插件)
