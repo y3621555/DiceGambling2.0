@@ -2,6 +2,7 @@ package com.johnson.dicegambling.Timer;
 
 import com.johnson.dicegambling.Config.ConfigManager;
 import com.johnson.dicegambling.Dicegambling;
+import com.johnson.dicegambling.data.dataManager;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -10,10 +11,12 @@ public class Timer extends BukkitRunnable {
     private int originalCountdown;
     public int countdown;
     ConfigManager configManager;
+    dataManager dataManager;
 
 
     public Timer(Dicegambling i){
         configManager = new ConfigManager(i);
+        dataManager = new dataManager(i.dataManager, i);
         originalCountdown = this.configManager.getConfig().getInt("DiceCooldown");
         countdown = originalCountdown;
     }
@@ -51,7 +54,9 @@ public class Timer extends BukkitRunnable {
                     " " +
                     this.configManager.getConfig().getString("message.dicecountdown.opendice")
             );
+            dataManager.OpenDice();
             countdown = originalCountdown;
+
         }
         countdown--;
     }

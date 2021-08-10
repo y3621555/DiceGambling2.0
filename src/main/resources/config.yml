@@ -47,3 +47,6 @@ message:
     BetHis: "玩家: {PLAYER} 類型: {TYPE} 金額: {MONEY}"
     NotBet: "&c你沒有下注"         #You are not bet
   InsufficientBalance: "&c餘額不足"
+  Winner: "你贏得: "
+  DiceNumber: "&a本次開獎: &f{number}"
+  NoBet: "無人下注"  #no people bet
